@@ -33,7 +33,8 @@ class FizzBuzzTests {
                 Arguments.of(85, "Buzz"),
                 Arguments.of(15, "FizzBuzz"),
                 Arguments.of(30, "FizzBuzz"),
-                Arguments.of(45, "FizzBuzz")
+                Arguments.of(45, "FizzBuzz"),
+                Arguments.of(7, "Whizz")
         );
     }
 
