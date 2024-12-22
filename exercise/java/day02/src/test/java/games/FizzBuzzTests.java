@@ -34,7 +34,9 @@ class FizzBuzzTests {
                 Arguments.of(15, "FizzBuzz"),
                 Arguments.of(30, "FizzBuzz"),
                 Arguments.of(45, "FizzBuzz"),
-                Arguments.of(7, "Whizz")
+                Arguments.of(7, "Whizz"),
+                Arguments.of(21, "FizzWhizz"),
+                Arguments.of(35, "BuzzWhizz")
         );
     }
 

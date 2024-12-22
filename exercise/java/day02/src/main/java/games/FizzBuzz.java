@@ -11,6 +11,8 @@ public class FizzBuzz {
     public static final int MIN = 1;
     public static final int MAX = 100;
     private static final Map<Integer, String> mapping = LinkedHashMap.of(
+            35, "BuzzWhizz",
+            21, "FizzWhizz",
             15, "FizzBuzz",
             3, "Fizz",
             5, "Buzz",
