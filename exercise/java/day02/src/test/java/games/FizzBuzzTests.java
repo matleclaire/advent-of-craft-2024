@@ -1,34 +1,35 @@
 package games;
 
-import io.vavr.collection.LinkedHashMap;
-import io.vavr.collection.Seq;
-import io.vavr.test.Arbitrary;
-import org.junit.jupiter.api.Test;
+import net.jqwik.api.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static games.FizzBuzz.MAX;
 import static games.FizzBuzz.MIN;
-import static io.vavr.API.List;
-import static io.vavr.API.Some;
-import static io.vavr.test.Arbitrary.integer;
-import static io.vavr.test.Property.def;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FizzBuzzTests {
-    private static final Seq<String> fizzBuzzStrings = List("Fizz", "Buzz", "FizzBuzz","FizzWhizz", "BuzzWhizz", "Whizz", "Bang");
-    public static final LinkedHashMap<Integer, String> MAPPING = LinkedHashMap.of(
-            35, "BuzzWhizz",
-            21, "FizzWhizz",
-            15, "FizzBuzz",
-            3, "Fizz",
-            5, "Buzz",
-            7, "Whizz",
-            11, "Bang"
-    );
+    private static final Set<String> fizzBuzzStrings = Set.of("Fizz", "Buzz", "FizzBuzz", "FizzWhizz", "BuzzWhizz", "Whizz", "Bang");
+    public static LinkedHashMap<Integer, String> MAPPING = new LinkedHashMap<>();
+
+    @BeforeAll
+    static void beforeAll() {
+        MAPPING.put(35, "BuzzWhizz");
+        MAPPING.put(21, "FizzWhizz");
+        MAPPING.put(15, "FizzBuzz");
+        MAPPING.put(3, "Fizz");
+        MAPPING.put(5, "Buzz");
+        MAPPING.put(7, "Whizz");
+        MAPPING.put(11, "Bang");
+    }
 
     public static Stream<Arguments> validInputs() {
         return Stream.of(
@@ -55,41 +56,39 @@ class FizzBuzzTests {
     @MethodSource("validInputs")
     void parse_successfully_numbers_between_1_and_100_samples(int input, String expectedResult) {
         assertThat(new FizzBuzz(MAPPING).convert(input))
-                .isEqualTo(Some(expectedResult));
+                .isEqualTo(Optional.of(expectedResult));
     }
 
-    @Test
-    void parse_return_valid_string_for_numbers_between_1_and_100() {
-        def("Some(validString) for numbers in [1; 100]")
-                .forAll(validInput())
-                .suchThat(this::isConvertValid)
-                .check()
-                .assertIsSatisfied();
+    @Property
+    public void parse_return_valid_string_for_numbers_between_1_and_100(@ForAll("validIntegers") int x) {
+        assertThat(isConvertValid(x)).isTrue();
     }
 
-    @Test
-    void parse_fail_for_numbers_out_of_range() {
-        def("None for numbers out of range")
-                .forAll(invalidInput())
-                .suchThat(x -> new FizzBuzz(MAPPING).convert(x).isEmpty())
-                .check()
-                .assertIsSatisfied();
+    @Provide
+    Arbitrary<Integer> validIntegers() {
+        return Arbitraries.integers().filter(x -> x >= MIN && x <= MAX);
+    }
+
+    @Property
+    public void parse_fail_for_numbers_out_of_range(@ForAll("invalidIntegers") int x) {
+        assertThat(isConvertValid(x)).isFalse();
+    }
+
+    @Provide
+    Arbitrary<Integer> invalidIntegers() {
+        return Arbitraries.integers().filter(x -> x < MIN || x > MAX);
     }
 
     private boolean isConvertValid(Integer x) {
         return new FizzBuzz(MAPPING).convert(x)
-                .exists(s -> validStringsFor(x).contains(s));
+                .map(s -> validStringsFor(x).contains(s))
+                .orElse(false);
     }
 
-    private static Arbitrary<Integer> validInput() {
-        return integer().filter(x -> x >= MIN && x <= MAX);
+    private Set<String> validStringsFor(Integer x) {
+        var strings = new HashSet<>(fizzBuzzStrings);
+        strings.add(x.toString());
+        return strings;
     }
 
-    private static Seq<String> validStringsFor(Integer x) {
-        return fizzBuzzStrings.append(x.toString());
-    }
-
-    private static Arbitrary<Integer> invalidInput() {
-        return integer().filter(x -> x < MIN || x > MAX);
-    }
 }
