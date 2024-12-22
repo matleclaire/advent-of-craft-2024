@@ -20,38 +20,36 @@ class SantaWorkshopServiceTest {
 
     @Test
     void prepareGiftWithValidToyShouldInstantiateIt() {
-        var giftName = faker.commerce().productName();
-        double weight = faker.number().randomDouble(3, 0 ,5);
-        var color = faker.color().name();
-        var material = faker.options().option("Wood", "Metal", "Plastic");
-
-        var gift = service.prepareGift(giftName, weight, color, material);
-
+        var gift = prepareGiftFor(aValidWeight());
         assertThat(gift).isNotNull();
     }
 
     @Test
     void retrieveAttributeOnGift() {
-        var giftName = faker.commerce().productName();
-        double weight = faker.number().randomDouble(3, 0, 5);
-        var color = faker.color().name();
-        var material = faker.options().option("Plastic", "Wood", "Metal");
-
-        var gift = service.prepareGift(giftName, weight, color, material);
+        var gift = prepareGiftFor(aValidWeight());
         gift.addAttribute(RECOMMENDED_AGE, "3");
 
         assertThat(gift.getRecommendedAge())
                 .isEqualTo(3);
     }
 
+    private Gift prepareGiftFor(double weight) {
+        var giftName = faker.commerce().productName();
+        var color = faker.color().name();
+        var material = faker.options().option("Plastic", "Wood", "Metal");
+
+        return service.prepareGift(giftName, weight, color, material);
+    }
+
+    private double aValidWeight() {
+        return faker.number().randomDouble(3, 0, 5);
+    }
+
     @Test
     void failsForATooHeavyGift() {
-        var giftName = "Dog-E";
-        double weight = 6;
-        var color = "White";
-        var material = "Metal";
+        var invalidWeight = faker.number().randomDouble(3, 5, Integer.MAX_VALUE);
 
-        assertThatThrownBy(() -> service.prepareGift(giftName, weight, color, material))
+        assertThatThrownBy(() -> prepareGiftFor(invalidWeight))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Gift is too heavy for Santa's sleigh");
     }
