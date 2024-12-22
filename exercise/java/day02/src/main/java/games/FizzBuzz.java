@@ -20,24 +20,27 @@ public class FizzBuzz {
             11, "Bang"
     );
 
-    public static Option<String> convert(int input) {
-        return isOutOfRange(input)
-                ? none()
-                : some(convertSafely(input));
+    public FizzBuzz() {
     }
 
-    private static String convertSafely(Integer input) {
+    private boolean is(Integer divisor, Integer input) {
+        return input % divisor == 0;
+    }
+
+    private boolean isOutOfRange(Integer input) {
+        return input < MIN || input > MAX;
+    }
+
+    private String convertSafely(Integer input) {
         return mapping
                 .find(p -> is(p._1, input))
                 .map(p -> p._2)
                 .getOrElse(input.toString());
     }
 
-    private static boolean is(Integer divisor, Integer input) {
-        return input % divisor == 0;
-    }
-
-    private static boolean isOutOfRange(Integer input) {
-        return input < MIN || input > MAX;
+    public Option<String> convert(int input) {
+        return isOutOfRange(input)
+                ? none()
+                : some(convertSafely(input));
     }
 }

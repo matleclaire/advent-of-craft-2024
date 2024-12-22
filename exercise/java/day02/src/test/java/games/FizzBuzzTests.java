@@ -44,7 +44,7 @@ class FizzBuzzTests {
     @ParameterizedTest
     @MethodSource("validInputs")
     void parse_successfully_numbers_between_1_and_100_samples(int input, String expectedResult) {
-        assertThat(FizzBuzz.convert(input))
+        assertThat(new FizzBuzz().convert(input))
                 .isEqualTo(Some(expectedResult));
     }
 
@@ -61,13 +61,13 @@ class FizzBuzzTests {
     void parse_fail_for_numbers_out_of_range() {
         def("None for numbers out of range")
                 .forAll(invalidInput())
-                .suchThat(x -> FizzBuzz.convert(x).isEmpty())
+                .suchThat(x -> new FizzBuzz().convert(x).isEmpty())
                 .check()
                 .assertIsSatisfied();
     }
 
     private boolean isConvertValid(Integer x) {
-        return FizzBuzz.convert(x)
+        return new FizzBuzz().convert(x)
                 .exists(s -> validStringsFor(x).contains(s));
     }
 
