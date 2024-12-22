@@ -1,5 +1,6 @@
 package games;
 
+import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.Seq;
 import io.vavr.test.Arbitrary;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class FizzBuzzTests {
     private static final Seq<String> fizzBuzzStrings = List("Fizz", "Buzz", "FizzBuzz","FizzWhizz", "BuzzWhizz", "Whizz", "Bang");
+    public static final LinkedHashMap<Integer, String> MAPPING = LinkedHashMap.of(
+            35, "BuzzWhizz",
+            21, "FizzWhizz",
+            15, "FizzBuzz",
+            3, "Fizz",
+            5, "Buzz",
+            7, "Whizz",
+            11, "Bang"
+    );
 
     public static Stream<Arguments> validInputs() {
         return Stream.of(
@@ -44,7 +54,7 @@ class FizzBuzzTests {
     @ParameterizedTest
     @MethodSource("validInputs")
     void parse_successfully_numbers_between_1_and_100_samples(int input, String expectedResult) {
-        assertThat(new FizzBuzz().convert(input))
+        assertThat(new FizzBuzz(MAPPING).convert(input))
                 .isEqualTo(Some(expectedResult));
     }
 
@@ -61,13 +71,13 @@ class FizzBuzzTests {
     void parse_fail_for_numbers_out_of_range() {
         def("None for numbers out of range")
                 .forAll(invalidInput())
-                .suchThat(x -> new FizzBuzz().convert(x).isEmpty())
+                .suchThat(x -> new FizzBuzz(MAPPING).convert(x).isEmpty())
                 .check()
                 .assertIsSatisfied();
     }
 
     private boolean isConvertValid(Integer x) {
-        return new FizzBuzz().convert(x)
+        return new FizzBuzz(MAPPING).convert(x)
                 .exists(s -> validStringsFor(x).contains(s));
     }
 

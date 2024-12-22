@@ -10,17 +10,10 @@ import static io.vavr.control.Option.some;
 public class FizzBuzz {
     public static final int MIN = 1;
     public static final int MAX = 100;
-    private static final Map<Integer, String> mapping = LinkedHashMap.of(
-            35, "BuzzWhizz",
-            21, "FizzWhizz",
-            15, "FizzBuzz",
-            3, "Fizz",
-            5, "Buzz",
-            7, "Whizz",
-            11, "Bang"
-    );
+    private final Map<Integer, String> mapping;
 
-    public FizzBuzz() {
+    public FizzBuzz(LinkedHashMap<Integer, String> mapping) {
+        this.mapping = mapping;
     }
 
     private boolean is(Integer divisor, Integer input) {
