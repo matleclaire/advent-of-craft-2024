@@ -16,7 +16,8 @@ public class FizzBuzz {
             15, "FizzBuzz",
             3, "Fizz",
             5, "Buzz",
-            7, "Whizz"
+            7, "Whizz",
+            11, "Bang"
     );
 
     public static Option<String> convert(int input) {

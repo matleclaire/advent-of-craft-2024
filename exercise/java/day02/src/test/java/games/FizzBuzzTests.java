@@ -18,7 +18,7 @@ import static io.vavr.test.Property.def;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FizzBuzzTests {
-    private static final Seq<String> fizzBuzzStrings = List("Fizz", "Buzz", "FizzBuzz");
+    private static final Seq<String> fizzBuzzStrings = List("Fizz", "Buzz", "FizzBuzz","FizzWhizz", "BuzzWhizz", "Whizz", "Bang");
 
     public static Stream<Arguments> validInputs() {
         return Stream.of(
@@ -36,7 +36,8 @@ class FizzBuzzTests {
                 Arguments.of(45, "FizzBuzz"),
                 Arguments.of(7, "Whizz"),
                 Arguments.of(21, "FizzWhizz"),
-                Arguments.of(35, "BuzzWhizz")
+                Arguments.of(35, "BuzzWhizz"),
+                Arguments.of(11, "Bang")
         );
     }
 
