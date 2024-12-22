@@ -7,8 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
 
+import static email.FileUtils.loadFile;
 import static io.vavr.test.Arbitrary.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class EncryptionTest {
     private final Encryption encryption = createEncryption();
@@ -34,6 +36,39 @@ class EncryptionTest {
                 .check()
                 .assertIsSatisfied();
     }
+
+    @Test
+    void should_decrypt_email_content() throws Exception {
+
+        var clearContent = encryption.decrypt(loadFile("encryptedEmail.txt"));
+
+        assertThat(clearContent)
+                .isEqualTo("""
+                        Dear consultant,
+                        
+                        We are facing an unprecedented challenge in Christmas Town.
+                        
+                        The systems that keep our magical operations running smoothly are outdated, fragile, and in dire need of modernization.\s
+                        We urgently require your expertise to ensure Christmas happens this year.
+                        Our town is located within a mountain circlet at the North Pole, surrounded by high peaks and protected by an advanced communication and shield system to hide it from the outside world.
+                        
+                        You have been selected for your exceptional skills and dedication.\s
+                        Please report to the North Pole immediately.\s
+                        
+                        Enclosed are your travel details and a non-disclosure agreement that you must sign upon arrival.
+                        Our dwarf friends from the security will receive and escort you in as soon as you check security.
+                        In the following days, you will receive bracelets to be able to pass through the magic shield.
+                        
+                        Time is of the essence.
+                        You must arrive before the beginning of December to be able to acclimate yourself with all the systems.
+                        
+                        We are counting on you to help save Christmas.
+                        
+                        Sincerely,
+                        
+                        Santa Claus 🎅""");
+    }
+
 
     private static Encryption createEncryption() {
         try {
