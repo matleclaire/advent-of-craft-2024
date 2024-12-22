@@ -1,5 +1,6 @@
 package preparation;
 
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SantaWorkshopServiceTest {
     private static final String RECOMMENDED_AGE = "recommendedAge";
+    private final Faker faker = new Faker();
+
     private SantaWorkshopService service;
 
     @BeforeEach
@@ -17,10 +20,10 @@ class SantaWorkshopServiceTest {
 
     @Test
     void prepareGiftWithValidToyShouldInstantiateIt() {
-        var giftName = "Bitzee";
-        double weight = 3;
-        var color = "Purple";
-        var material = "Plastic";
+        var giftName = faker.commerce().productName();
+        double weight = faker.number().randomDouble(3, 0 ,5);
+        var color = faker.color().name();
+        var material = faker.options().option("Wood", "Metal", "Plastic");
 
         var gift = service.prepareGift(giftName, weight, color, material);
 
@@ -29,10 +32,10 @@ class SantaWorkshopServiceTest {
 
     @Test
     void retrieveAttributeOnGift() {
-        var giftName = "Furby";
-        double weight = 1;
-        var color = "Multi";
-        var material = "Cotton";
+        var giftName = faker.commerce().productName();
+        double weight = faker.number().randomDouble(3, 0, 5);
+        var color = faker.color().name();
+        var material = faker.options().option("Plastic", "Wood", "Metal");
 
         var gift = service.prepareGift(giftName, weight, color, material);
         gift.addAttribute(RECOMMENDED_AGE, "3");
