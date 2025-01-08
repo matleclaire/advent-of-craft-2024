@@ -15,12 +15,7 @@ public class Building {
                      new Pair<>(c, c == '(' ? 1 : -1));
         }
 
-        int result = 0;
-        for (Pair<Character, Integer> kp : val) {
-            result += kp.value();
-        }
-
-        return result;
+        return val.stream().mapToInt(Pair::value).sum();
     }
 
     private static int map(char c) {
