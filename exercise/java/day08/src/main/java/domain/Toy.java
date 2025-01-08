@@ -1,16 +1,17 @@
 package domain;
 
+import static domain.Toy.State.UNASSIGNED;
+
 public class Toy {
     public enum State {
-        UNASSIGNED, IN_PRODUCTION, COMPLETED
+        UNASSIGNED, IN_PRODUCTION, COMPLETED;
     }
-
     private final String name;
-    private State state;
 
-    public Toy(String name, State state) {
+    private State state;
+    public Toy(String name) {
         this.name = name;
-        this.state = state;
+        this.state = UNASSIGNED;
     }
 
     public String getName() {
@@ -21,7 +22,10 @@ public class Toy {
         return state;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public  void assignToElf() {
+        if (this.state == State.UNASSIGNED) {
+            this.state = State.IN_PRODUCTION;
+        }
     }
+
 }
