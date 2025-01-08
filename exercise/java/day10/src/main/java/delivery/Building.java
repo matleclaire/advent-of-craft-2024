@@ -11,16 +11,8 @@ public class Building {
             char c = instructions.charAt(i);
 
             if (instructions.contains("🧝")) {
-                int j;
-                if (c == ')') {
-                    j = 3;
-                } else if (c == '(') {
-                    j = -2;
-                } else {
-                    j = 0;
-                }
 
-                val.add(new Pair<>(c, j));
+                val.add(new Pair<>(c, map(c)));
             } else if (!instructions.contains("🧝")) {
                 val.add(new Pair<>(c, c == '(' ? 1 : -1));
             } else {
@@ -34,6 +26,14 @@ public class Building {
         }
 
         return result;
+    }
+
+    private static int map(char c) {
+        return switch (c) {
+            case ')' -> 3;
+            case '(' -> -2;
+            default -> 0;
+        };
     }
 
     public record Pair<K, V>(K key, V value) {
