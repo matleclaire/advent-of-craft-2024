@@ -10,15 +10,19 @@ public class Building {
         for (int i = 0; i < instructions.length(); i++) {
             char c = instructions.charAt(i);
 
-           val.add( instructions.contains("🧝")?
-                   new Pair<>(c,map(c)):
-                     new Pair<>(c, c == '(' ? 1 : -1));
+            val.add(instructions.contains("🧝") ?
+                    new Pair<>(c, elfMap(c)) :
+                    new Pair<>(c, normalMap(c)));
         }
 
         return val.stream().mapToInt(Pair::value).sum();
     }
 
-    private static int map(char c) {
+    private static int normalMap(char c) {
+        return c == '(' ? 1 : -1;
+    }
+
+    private static int elfMap(char c) {
         return switch (c) {
             case ')' -> 3;
             case '(' -> -2;
