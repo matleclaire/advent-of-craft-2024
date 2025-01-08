@@ -10,14 +10,9 @@ public class Building {
         for (int i = 0; i < instructions.length(); i++) {
             char c = instructions.charAt(i);
 
-            if (instructions.contains("🧝")) {
-
-                val.add(new Pair<>(c, map(c)));
-            } else if (!instructions.contains("🧝")) {
-                val.add(new Pair<>(c, c == '(' ? 1 : -1));
-            } else {
-                val.add(new Pair<>(c, c == '(' ? 42 : -2));
-            }
+           val.add( instructions.contains("🧝")?
+                   new Pair<>(c,map(c)):
+                     new Pair<>(c, c == '(' ? 1 : -1));
         }
 
         int result = 0;
