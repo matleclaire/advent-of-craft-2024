@@ -12,8 +12,13 @@ public class Building {
 
             if (instructions.contains("🧝")) {
                 int j;
-                if (c == ')') j = 3;
-                else j = -2;
+                if (c == ')') {
+                    j = 3;
+                } else if (c == '(') {
+                    j = -2;
+                } else {
+                    j = 0;
+                }
 
                 val.add(new Pair<>(c, j));
             } else if (!instructions.contains("🧝")) {
