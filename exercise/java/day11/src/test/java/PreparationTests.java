@@ -1,5 +1,7 @@
 import christmas.Preparation;
 import christmas.ToyType;
+import net.jqwik.api.*;
+import net.jqwik.api.constraints.IntRange;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -45,5 +47,25 @@ class PreparationTests {
     void ensureToyBalance(ToyType toyType, int toysCount, int totalToys, boolean expected) {
         boolean result = Preparation.ensureToyBalance(toyType, toysCount, totalToys);
         assertThat(result).isEqualTo(expected);
+    }
+
+    @Property
+    public boolean categorizeGiftForBabies(@ForAll @IntRange(max = 2) int age) {
+        return "Baby".equals(Preparation.categorizeGift(age));
+    }
+
+    @Property
+    public boolean categorizeGiftForToddlers(@ForAll @IntRange(min = 3, max = 5) int age) {
+        return "Toddler".equals(Preparation.categorizeGift(age));
+    }
+
+    @Property
+    public boolean categorizeGiftForChildren(@ForAll @IntRange(min = 6, max = 12) int age) {
+        return "Child".equals(Preparation.categorizeGift(age));
+    }
+
+    @Property
+    public boolean categorizeGiftForTeens(@ForAll @IntRange(min = 13, max = 100) int age) {
+        return "Teen".equals(Preparation.categorizeGift(age));
     }
 }
