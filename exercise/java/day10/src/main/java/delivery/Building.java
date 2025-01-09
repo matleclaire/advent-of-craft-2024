@@ -12,15 +12,14 @@ public class Building {
     public static int whichFloor(String instructions) {
         List<Pair<Character, Integer>> val = new ArrayList<>();
 
-        for (int i = 0; i < instructions.length(); i++) {
-            char c = instructions.charAt(i);
 
-            val.add(instructions.contains(ELF_SYMBOL) ?
-                    new Pair<>(c, elfMap(c)) :
-                    new Pair<>(c, normalMap(c)));
-        }
+        return instructions.chars()
+                .mapToObj(c -> (char) c)
+                .mapToInt(c -> instructions.contains(ELF_SYMBOL) ?
+                        elfMap(c) :
+                        normalMap(c))
+                .sum();
 
-        return val.stream().mapToInt(Pair::value).sum();
     }
 
     private static int normalMap(char c) {
