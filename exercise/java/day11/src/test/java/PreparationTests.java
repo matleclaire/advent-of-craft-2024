@@ -33,14 +33,15 @@ class PreparationTests {
     }
 
     @ParameterizedTest
-    @CsvSource({
+    @CsvSource(value = {
             "EDUCATIONAL, 25, 100, true",
             "FUN, 30, 100, true",
             "CREATIVE, 20, 100, true",
             "EDUCATIONAL, 20, 100, false",
             "FUN, 29, 100, false",
-            "CREATIVE, 15, 100, false"
-    })
+            "CREATIVE, 15, 100, false",
+            "null, 1, 1, false",
+    }, nullValues={"null"})
     void ensureToyBalance(ToyType toyType, int toysCount, int totalToys, boolean expected) {
         boolean result = Preparation.ensureToyBalance(toyType, toysCount, totalToys);
         assertThat(result).isEqualTo(expected);

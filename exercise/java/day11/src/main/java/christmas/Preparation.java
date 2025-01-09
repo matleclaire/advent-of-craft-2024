@@ -31,6 +31,7 @@ public class Preparation {
             case EDUCATIONAL -> typePercentage >= 0.25;
             case FUN -> typePercentage >= 0.30;
             case CREATIVE -> typePercentage >= 0.20;
+            case null -> false;
         };
     }
 }
