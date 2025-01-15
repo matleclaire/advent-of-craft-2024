@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 class SantaTest {
 
@@ -14,10 +15,9 @@ class SantaTest {
 
     @Test
     void given_naughty_child_when_distributing_gifts_then_child_receives_third_choice() {
-        Child bobby = new Child("bobby", Behavior.NAUGHTY);
-        bobby.setWishList(PLAYSTATION, PLUSH, BALL);
+        Optional<Child> bobby = Child.createChild("bobby", Behavior.NAUGHTY, PLAYSTATION, PLUSH, BALL);
         Santa santa = new Santa();
-        santa.addChild(bobby);
+        santa.addChild(bobby.get());
         Toy got = santa.chooseToyForChild("bobby");
 
         Assertions.assertEquals(BALL, got);
@@ -25,10 +25,9 @@ class SantaTest {
 
     @Test
     void given_nice_child_when_distributing_gifts_then_child_receives_second_choice() {
-        Child bobby = new Child("bobby", Behavior.NICE);
-        bobby.setWishList(PLAYSTATION, PLUSH, BALL);
+        Optional<Child> bobby = Child.createChild("bobby", Behavior.NICE, PLAYSTATION, PLUSH, BALL);
         Santa santa = new Santa();
-        santa.addChild(bobby);
+        santa.addChild(bobby.get());
         Toy got = santa.chooseToyForChild("bobby");
 
         Assertions.assertEquals(PLUSH, got);
@@ -36,10 +35,9 @@ class SantaTest {
 
     @Test
     void given_very_nice_child_when_distributing_gifts_then_child_receives_first_choice() {
-        Child bobby = new Child("bobby", Behavior.VERY_NICE);
-        bobby.setWishList(PLAYSTATION, PLUSH, BALL);
+        Optional<Child> bobby = Child.createChild("bobby", Behavior.VERY_NICE, PLAYSTATION, PLUSH, BALL);
         Santa santa = new Santa();
-        santa.addChild(bobby);
+        santa.addChild(bobby.get());
         Toy got = santa.chooseToyForChild("bobby");
 
         Assertions.assertEquals(PLAYSTATION, got);
@@ -48,9 +46,8 @@ class SantaTest {
     @Test
     void given_non_existing_child_when_distributing_gifts_then_exception_thrown() {
         Santa santa = new Santa();
-        Child bobby = new Child("bobby", Behavior.VERY_NICE);
-        bobby.setWishList(PLAYSTATION, PLUSH, BALL);
-        santa.addChild(bobby);
+        Optional<Child> bobby = Child.createChild("bobby", Behavior.VERY_NICE, PLAYSTATION, PLUSH, BALL);
+        santa.addChild(bobby.get());
 
         Assertions.assertThrows(NoSuchElementException.class, () -> santa.chooseToyForChild("alice"));
     }

@@ -1,13 +1,14 @@
 package gifts;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Wishlist {
     List<Toy> wishlist;
 
-    public Wishlist() {
-        this.wishlist = new ArrayList<>();
+    public Wishlist(Toy[] toys) {
+        this.wishlist = Arrays.asList(toys);
     }
 
     public Toy getFirstChoice() {
