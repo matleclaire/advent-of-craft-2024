@@ -3,16 +3,16 @@ package gifts;
 public class Child {
 
     private final String name;
-    private final String behavior;
+    private final Behavior behavior;
     private Wishlist wishlist;
 
-    public Child(String name, String behavior) {
+    public Child(String name, Behavior behavior) {
         this.name = name;
         this.behavior = behavior;
         this.wishlist = new Wishlist();
     }
 
-    public String getBehavior() {
+    public Behavior getBehavior() {
         return behavior;
     }
 

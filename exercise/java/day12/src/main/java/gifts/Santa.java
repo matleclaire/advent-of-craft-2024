@@ -14,13 +14,13 @@ public class Santa {
         var found = childrenRepository.findChild(childName);
         Child child = found.orElseThrow(NoSuchElementException::new);
 
-        if ("naughty".equals(child.getBehavior()))
+        if (Behavior.NAUGHTY.equals(child.getBehavior()))
             return child.getWishlist().getThirdChoice();
 
-        if ("nice".equals(child.getBehavior()))
+        if (Behavior.NICE.equals(child.getBehavior()))
             return child.getWishlist().getSecondChoice();
 
-        if ("very nice".equals(child.getBehavior()))
+        if (Behavior.VERY_NICE.equals(child.getBehavior()))
             return child.getWishlist().getFirstChoice();
 
         return null;
