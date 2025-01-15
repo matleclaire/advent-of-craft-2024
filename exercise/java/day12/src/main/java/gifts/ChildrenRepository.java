@@ -1,5 +1,6 @@
 package gifts;
 
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +13,7 @@ public class ChildrenRepository {
         this.children = new ArrayList<>();
     }
 
-    public Optional<Child> findChild(String childName) {
+    public Optional<Child> findByName(String childName) {
         Optional<Child> found = Optional.empty();
         for (Child currentChild : children) {
             if (currentChild.getName().equals(childName)) {

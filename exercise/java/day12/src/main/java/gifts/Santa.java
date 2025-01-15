@@ -1,7 +1,6 @@
 package gifts;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 public class Santa {
 
@@ -12,19 +11,9 @@ public class Santa {
     }
 
     public Toy chooseToyForChild(String childName) {
-        Optional<Child> found = childrenRepository.findChild(childName);
-        var child = found.orElseThrow(NoSuchElementException::new);
-
-        if (Behavior.NAUGHTY.equals(child.getBehavior()))
-            return child.getWishlist().getThirdChoice();
-
-        if (Behavior.NICE.equals(child.getBehavior()))
-            return child.getWishlist().getSecondChoice();
-
-        if (Behavior.VERY_NICE.equals(child.getBehavior()))
-            return child.getWishlist().getFirstChoice();
-
-        return null;
+        return childrenRepository.findByName(childName)
+                .map(Child::chooseToy)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public void addChild(Child child) {

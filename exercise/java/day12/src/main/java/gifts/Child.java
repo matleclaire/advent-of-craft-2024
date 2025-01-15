@@ -6,7 +6,7 @@ public class Child {
 
     private final String name;
     private final Behavior behavior;
-    private Wishlist wishlist;
+    private final Wishlist wishlist;
 
     private Child(String name, Behavior behavior, Wishlist wishlist) {
         this.name = name;
@@ -22,20 +22,17 @@ public class Child {
 
     }
 
-    public Behavior getBehavior() {
-        return behavior;
-    }
-
-    public Wishlist getWishlist() {
-        return wishlist;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setWishList(Toy firstChoice, Toy secondChoice, Toy thirdChoice) {
-        wishlist.setWishList(firstChoice, secondChoice, thirdChoice);
+
+    public Toy chooseToy() {
+        return switch (behavior) {
+            case Behavior.NAUGHTY -> wishlist.getThirdChoice();
+            case Behavior.NICE -> wishlist.getSecondChoice();
+            case Behavior.VERY_NICE -> wishlist.getFirstChoice();
+        };
     }
 
 }
